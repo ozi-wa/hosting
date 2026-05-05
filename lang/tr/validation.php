@@ -1,0 +1,46 @@
+<?php
+
+return [
+    'accepted' => ':attribute kabul edilmelidir.',
+    'confirmed' => ':attribute doğrulaması eşleşmiyor.',
+    'email' => ':attribute geçerli bir e-posta adresi olmalıdır.',
+    'exists' => 'Seçilen :attribute geçersiz.',
+    'in' => 'Seçilen :attribute geçersiz.',
+    'integer' => ':attribute tam sayı olmalıdır.',
+    'max' => [
+        'string' => ':attribute en fazla :max karakter olmalıdır.',
+    ],
+    'min' => [
+        'numeric' => ':attribute en az :min olmalıdır.',
+        'string' => ':attribute en az :min karakter olmalıdır.',
+    ],
+    'numeric' => ':attribute sayı olmalıdır.',
+    'required' => ':attribute alanı zorunludur.',
+    'size' => [
+        'string' => ':attribute :size karakter olmalıdır.',
+    ],
+    'string' => ':attribute metin olmalıdır.',
+    'unique' => ':attribute daha önce alınmış.',
+    'attributes' => [
+        'billing_cycle' => 'faturalama periyodu',
+        'body' => 'içerik',
+        'company_name' => 'firma adı',
+        'currency' => 'para birimi',
+        'department' => 'departman',
+        'description' => 'açıklama',
+        'domain' => 'alan adı',
+        'email' => 'e-posta',
+        'message' => 'mesaj',
+        'monthly_price' => 'aylık fiyat',
+        'name' => 'ad',
+        'password' => 'şifre',
+        'phone' => 'telefon',
+        'priority' => 'öncelik',
+        'product_id' => 'ürün',
+        'slug' => 'bağlantı adı',
+        'status' => 'durum',
+        'subject' => 'konu',
+        'title' => 'başlık',
+        'yearly_price' => 'yıllık fiyat',
+    ],
+];

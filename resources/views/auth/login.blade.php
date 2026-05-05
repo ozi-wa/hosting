@@ -1,0 +1,3 @@
+<x-layouts.app title="Giriş Yap">
+    <section class="container-page max-w-md py-14"><form method="POST" action="{{ route('login') }}" class="panel grid gap-4">@csrf<h1 class="text-2xl font-bold">Giriş Yap</h1><label><span class="label">E-posta</span><input class="field" name="email" type="email" required></label><label><span class="label">Şifre</span><input class="field" name="password" type="password" required></label><label class="flex gap-2 text-sm"><input type="checkbox" name="remember"> Beni hatırla</label><button class="btn-primary">Giriş Yap</button><a class="text-sm text-cyan-600" href="{{ route('password.request') }}">Şifremi unuttum</a></form></section>
+</x-layouts.app>
