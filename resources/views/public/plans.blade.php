@@ -9,7 +9,7 @@
                     <p class="mt-6 text-3xl font-bold">{{ $product->monthly_price }} {{ $product->currency }}<span class="text-sm text-slate-500">/ay</span></p>
                     @if($product->yearly_price)<p class="text-sm text-slate-500">{{ $product->yearly_price }} {{ $product->currency }}/yıl</p>@endif
                     <ul class="mt-5 grid gap-2 text-sm">@foreach(($product->features ?? []) as $feature)<li>{{ $feature }}</li>@endforeach</ul>
-                    <a href="{{ route('client.orders.create') }}" class="btn-primary mt-auto">Sipariş Ver</a>
+                    <a href="{{ config('services.whmcs.client_url') }}/cart.php?a=add&pid={{ $product->whmcs_product_id }}" class="btn-primary mt-auto">Sipariş Ver</a>
                 </article>
             @endforeach
         </div>
