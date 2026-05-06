@@ -34,8 +34,11 @@ class WhmcsGateway
 
                 return $existingClientId;
             }
-        } catch (WhmcsApiException) {
-            // WHMCS e-posta adresini bulamazsa yeni müşteri oluşturulur.
+        } catch (WhmcsApiException $e) {
+            if (empty($e->payload)) {
+                throw $e; // Bağlantı/HTTP hatası — müşteri oluşturmaya geçme.
+            }
+            // API düzeyinde hata (müşteri bulunamadı) — yeni oluşturulacak.
         }
 
         $nameParts = explode(' ', trim($user->name), 2);

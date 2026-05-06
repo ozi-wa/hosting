@@ -10,7 +10,6 @@ use App\Services\Whmcs\WhmcsGateway;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
@@ -78,7 +77,7 @@ class AuthController extends Controller
         $bearer = $request->bearerToken();
 
         if ($bearer) {
-            ApiToken::all()->first(fn (ApiToken $token): bool => Hash::check($bearer, $token->token))?->delete();
+            ApiToken::where('token', hash('sha256', $bearer))->delete();
         }
 
         return response()->json(['message' => 'Çıkış yapıldı.']);
@@ -91,7 +90,7 @@ class AuthController extends Controller
         ApiToken::create([
             'user_id' => $user->id,
             'name' => 'api',
-            'token' => Hash::make($plain),
+            'token' => hash('sha256', $plain),
             'abilities' => ['*'],
             'expires_at' => now()->addDays(30),
         ]);

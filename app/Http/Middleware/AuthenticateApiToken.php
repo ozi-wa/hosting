@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use App\Models\ApiToken;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticateApiToken
@@ -24,9 +23,9 @@ class AuthenticateApiToken
         }
 
         $token = ApiToken::query()
-            ->where(fn ($query) => $query->whereNull('expires_at')->orWhere('expires_at', '>', now()))
-            ->get()
-            ->first(fn (ApiToken $candidate): bool => Hash::check($plainToken, $candidate->token));
+            ->where('token', hash('sha256', $plainToken))
+            ->where(fn ($q) => $q->whereNull('expires_at')->orWhere('expires_at', '>', now()))
+            ->first();
 
         if (! $token) {
             return response()->json(['message' => 'Geçersiz token.'], 401);

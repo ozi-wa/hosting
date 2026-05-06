@@ -4,16 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Service;
-use App\Services\Whmcs\WhmcsProjectionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    public function index(Request $request, WhmcsProjectionService $whmcs): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $whmcs->syncServices($request->user());
-
         return response()->json(['data' => $request->user()->services()->with('product')->latest()->get()]);
     }
 
