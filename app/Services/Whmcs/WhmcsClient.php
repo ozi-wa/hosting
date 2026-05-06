@@ -36,6 +36,7 @@ class WhmcsClient
 
         try {
             $response = Http::asForm()
+                ->withUserAgent('Mozilla/5.0 (compatible; WHMCS-API/1.0)')
                 ->timeout(20)
                 ->retry(2, 250)
                 ->post($apiUrl, $payload);
