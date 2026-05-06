@@ -81,12 +81,14 @@ class PublicPageController extends Controller
 
     private function categoryPage(string $slug, string $title): View
     {
-        $category = Category::where('slug', $slug)->firstOrFail();
+        $category = Category::where('slug', $slug)->first();
 
         return view('public.plans', [
             'title' => $title,
             'category' => $category,
-            'products' => $category->products()->where('is_active', true)->orderBy('sort_order')->get(),
+            'products' => $category
+                ? $category->products()->where('is_active', true)->orderBy('sort_order')->get()
+                : collect(),
         ]);
     }
 }

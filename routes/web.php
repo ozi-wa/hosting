@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BlogPostController as AdminBlogPostController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -32,6 +33,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->n
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function (): void {
     Route::get('/dashboard', AdminDashboardController::class)->name('dashboard');
     Route::resource('users', AdminUserController::class)->only(['index', 'edit', 'update']);
+    Route::resource('categories', AdminCategoryController::class);
     Route::resource('blog-posts', AdminBlogPostController::class);
     Route::get('settings', [AdminSettingController::class, 'edit'])->name('settings.edit');
     Route::post('settings', [AdminSettingController::class, 'update'])->name('settings.update');

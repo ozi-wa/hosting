@@ -5,6 +5,7 @@
             <div class="grid gap-2 text-sm">
                 <a href="{{ route('admin.dashboard') }}">Özet</a>
                 <a href="{{ route('admin.users.index') }}">Kullanıcılar</a>
+                <a href="{{ route('admin.categories.index') }}">Kategoriler</a>
                 <a href="{{ route('admin.blog-posts.index') }}">Blog</a>
                 <a href="{{ route('admin.settings.edit') }}">Ayarlar</a>
                 <a href="{{ config('services.whmcs.client_url') }}/admin" target="_blank" class="text-cyan-600">WHMCS Paneli ↗</a>
