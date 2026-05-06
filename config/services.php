@@ -37,6 +37,7 @@ return [
 
     'whmcs' => [
         'enabled' => env('WHMCS_ENABLED', false),
+        'client_url' => env('WHMCS_CLIENT_URL', ''),
         'api_url' => env('WHMCS_API_URL'),
         'identifier' => env('WHMCS_API_IDENTIFIER'),
         'secret' => env('WHMCS_API_SECRET'),

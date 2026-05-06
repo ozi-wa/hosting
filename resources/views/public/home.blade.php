@@ -31,7 +31,7 @@
                     <p class="mt-2 min-h-12 text-sm text-slate-500">{{ $product->short_description }}</p>
                     <p class="mt-6 text-3xl font-bold">{{ $product->monthly_price }} {{ $product->currency }}<span class="text-sm font-medium text-slate-500">/ay</span></p>
                     <ul class="mt-5 grid gap-2 text-sm text-slate-600 dark:text-slate-300">@foreach(($product->features ?? []) as $feature)<li>{{ $feature }}</li>@endforeach</ul>
-                    <a href="{{ route('client.orders.create') }}" class="btn-primary mt-6">Hemen Sipariş Ver</a>
+                    <a href="{{ config('services.whmcs.client_url') }}/cart.php?a=add&pid={{ $product->whmcs_product_id }}" class="btn-primary mt-6">Hemen Sipariş Ver</a>
                 </article>
             @endforeach
         </div>

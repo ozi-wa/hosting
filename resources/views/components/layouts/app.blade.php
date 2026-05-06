@@ -22,11 +22,12 @@
         </div>
         <div class="flex items-center gap-3">
             @auth
-                <a class="btn-secondary" href="{{ route('client.dashboard') }}">Panel</a>
-                @if(auth()->user()->isAdmin()) <a class="btn-primary" href="{{ route('admin.dashboard') }}">Yönetim</a> @endif
+                @if(auth()->user()->isAdmin())
+                    <a class="btn-primary" href="{{ route('admin.dashboard') }}">Yönetim</a>
+                @endif
             @else
-                <a class="btn-secondary" href="{{ route('login') }}">Giriş</a>
-                <a class="btn-primary" href="{{ route('register') }}">Başla</a>
+                <a class="btn-secondary" href="{{ config('services.whmcs.client_url') }}/clientarea.php">Giriş</a>
+                <a class="btn-primary" href="{{ config('services.whmcs.client_url') }}/register.php">Başla</a>
             @endauth
         </div>
     </nav>

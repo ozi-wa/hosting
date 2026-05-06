@@ -2,9 +2,7 @@
 
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\User;
 use App\Services\Whmcs\WhmcsGateway;
-use App\Services\Whmcs\WhmcsProjectionService;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -75,32 +73,3 @@ Artisan::command('whmcs:sync-products', function (WhmcsGateway $whmcs) {
 
     return 0;
 })->purpose('WHMCS ürün kataloğunu Laravel vitrin önbelleğine senkronize eder');
-
-Artisan::command('whmcs:sync-client {email?}', function (WhmcsProjectionService $projection, WhmcsGateway $whmcs) {
-    if (! $whmcs->enabled()) {
-        $this->error('WHMCS devre dışı. WHMCS_ENABLED=true yapıp API bilgilerini girin.');
-
-        return 1;
-    }
-
-    $email = $this->argument('email');
-
-    $users = $email
-        ? User::where('email', $email)->get()
-        : User::whereNotNull('whmcs_client_id')->get();
-
-    if ($users->isEmpty()) {
-        $this->warn('Eşleşen kullanıcı bulunamadı.');
-
-        return 0;
-    }
-
-    foreach ($users as $user) {
-        $this->line("  → {$user->email}");
-        $projection->syncClient($user);
-    }
-
-    $this->info("{$users->count()} kullanıcı senkronize edildi.");
-
-    return 0;
-})->purpose('WHMCS hizmet ve fatura verilerini yerel veritabanına çeker (e-posta verilmezse tüm eşleşmiş kullanıcılar)');

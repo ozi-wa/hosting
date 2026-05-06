@@ -1,1 +1,13 @@
-<x-layouts.panel title="Yönetim Özeti"><h1 class="mb-6 text-2xl font-bold">Yönetim Özeti</h1><div class="grid gap-4 md:grid-cols-4">@foreach(['Gelir'=>$revenue,'Kullanıcılar'=>$usersCount,'Siparişler'=>$ordersCount,'Açık Talepler'=>$openTickets] as $label=>$value)<div class="panel"><p class="text-sm text-slate-500">{{ $label }}</p><p class="mt-2 text-3xl font-bold">{{ $value }}</p></div>@endforeach</div><div class="mt-6 grid gap-6 lg:grid-cols-2"><div class="panel"><h2 class="font-semibold">Son siparişler</h2>@foreach($recentOrders as $order)<p class="mt-3 text-sm">{{ $order->number }} - {{ $order->user->name }} - {{ $order->product->name }}</p>@endforeach</div><div class="panel"><h2 class="font-semibold">Ödenmemiş faturalar</h2>@foreach($unpaidInvoices as $invoice)<p class="mt-3 text-sm"><a href="{{ route('admin.invoices.show',$invoice) }}">{{ $invoice->number }}</a> - {{ $invoice->user->name }} - {{ $invoice->total }}</p>@endforeach</div></div></x-layouts.panel>
+<x-layouts.panel title="Yönetim Özeti">
+<h1 class="mb-6 text-2xl font-bold">Yönetim Özeti</h1>
+<div class="grid gap-4 md:grid-cols-3">
+    @foreach(['Kullanıcılar' => $usersCount, 'Aktif Ürünler' => $productsCount, 'Blog Yazıları' => $blogPostsCount] as $label => $value)
+        <div class="panel"><p class="text-sm text-slate-500">{{ $label }}</p><p class="mt-2 text-3xl font-bold">{{ $value }}</p></div>
+    @endforeach
+</div>
+<div class="panel mt-6">
+    <h2 class="font-semibold">Fatura, Sipariş & Destek Yönetimi</h2>
+    <p class="mt-2 text-sm text-slate-500">Sipariş, fatura, servis ve destek talepleri WHMCS üzerinden yönetilmektedir.</p>
+    <a class="btn-primary mt-4 inline-block" href="{{ config('services.whmcs.client_url') }}/admin" target="_blank">WHMCS Yönetim Paneline Git ↗</a>
+</div>
+</x-layouts.panel>
