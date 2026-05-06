@@ -12,6 +12,7 @@ Sistem tamamen Türkçe arayüzle hazırlanmıştır. Laravel tarafı vitrin, SE
 - Müşteri paneli
 - Yönetim paneli
 - WHMCS ürün senkronizasyonu
+- WHMCS müşteri kayıt ve giriş doğrulaması
 - WHMCS üzerinden sipariş oluşturma
 - WHMCS fatura ve servis projection/cache yapısı
 - WHMCS üzerinden destek talebi açma ve yanıtlama

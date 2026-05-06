@@ -65,6 +65,49 @@ class WhmcsGateway
         return $clientId;
     }
 
+    public function registerClient(array $data): int
+    {
+        $nameParts = explode(' ', trim($data['name']), 2);
+        $response = $this->client->call('AddClient', [
+            'firstname' => $nameParts[0] ?: $data['name'],
+            'lastname' => $nameParts[1] ?? '-',
+            'companyname' => $data['company_name'] ?? null,
+            'email' => $data['email'],
+            'address1' => $data['billing_address'] ?? 'Belirtilmedi',
+            'city' => $data['city'] ?? 'Istanbul',
+            'state' => $data['state'] ?? 'Istanbul',
+            'postcode' => $data['postcode'] ?? '34000',
+            'country' => $data['country'] ?? 'TR',
+            'phonenumber' => $data['phone'] ?? '+900000000000',
+            'password2' => $data['password'],
+            'skipvalidation' => true,
+        ]);
+
+        $clientId = (int) ($response['clientid'] ?? 0);
+
+        if ($clientId <= 0) {
+            throw new WhmcsApiException('WHMCS müşteri id döndürmedi.', $response);
+        }
+
+        return $clientId;
+    }
+
+    public function validateLogin(string $email, string $password): int
+    {
+        $response = $this->client->call('ValidateLogin', [
+            'email' => $email,
+            'password2' => $password,
+        ]);
+
+        $clientId = (int) ($response['userid'] ?? $response['clientid'] ?? 0);
+
+        if ($clientId <= 0) {
+            throw new WhmcsApiException('WHMCS giriş bilgileri doğrulanamadı.', $response);
+        }
+
+        return $clientId;
+    }
+
     public function createOrder(User $user, Product $product, string $billingCycle, array $metadata = []): array
     {
         if (! $product->whmcs_product_id) {

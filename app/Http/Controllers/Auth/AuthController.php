@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\Whmcs\WhmcsApiException;
+use App\Services\Whmcs\WhmcsGateway;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
@@ -38,6 +40,33 @@ class AuthController extends Controller
     {
         $credentials = $request->validate(['email' => ['required', 'email'], 'password' => ['required', 'string']]);
 
+        $whmcs = app(WhmcsGateway::class);
+
+        if ($whmcs->enabled()) {
+            try {
+                $clientId = $whmcs->validateLogin($credentials['email'], $credentials['password']);
+            } catch (WhmcsApiException) {
+                return back()->withErrors(['email' => __('auth.failed')])->onlyInput('email');
+            }
+
+            $user = User::updateOrCreate(
+                ['email' => $credentials['email']],
+                [
+                    'name' => $credentials['email'],
+                    'password' => $credentials['password'],
+                    'role' => 'client',
+                    'status' => 'active',
+                    'whmcs_client_id' => $clientId,
+                    'email_verified_at' => now(),
+                ],
+            );
+
+            Auth::login($user, $request->boolean('remember'));
+            $request->session()->regenerate();
+
+            return redirect()->intended(route('client.dashboard'));
+        }
+
         if (! Auth::attempt($credentials, $request->boolean('remember'))) {
             return back()->withErrors(['email' => __('auth.failed')])->onlyInput('email');
         }
@@ -49,13 +78,25 @@ class AuthController extends Controller
 
     public function register(Request $request): RedirectResponse
     {
-        $user = User::create($request->validate([
+        $data = $request->validate([
             'name' => ['required', 'string', 'max:120'],
             'email' => ['required', 'email', 'max:180', 'unique:users,email'],
             'password' => ['required', 'confirmed', 'min:8'],
             'company_name' => ['nullable', 'string', 'max:180'],
             'phone' => ['nullable', 'string', 'max:40'],
-        ]));
+        ]);
+
+        $whmcs = app(WhmcsGateway::class);
+        $clientId = null;
+
+        if ($whmcs->enabled()) {
+            $clientId = $whmcs->registerClient($data);
+        }
+
+        $user = User::create($data + [
+            'whmcs_client_id' => $clientId,
+            'email_verified_at' => $whmcs->enabled() ? now() : null,
+        ]);
 
         event(new Registered($user));
         Auth::login($user);

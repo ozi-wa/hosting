@@ -126,8 +126,10 @@ php artisan whmcs:sync-products
 
 Çalışma mantığı:
 
-- Laravel tarafı vitrin, oturum ve kullanıcı deneyimini yönetir.
-- İlk sipariş veya destek işleminde WHMCS müşteri id oluşturulur ya da mevcut müşteri bulunur.
+- Ürünler WHMCS'te oluşturulur, Laravel'e `whmcs:sync-products` ile çekilir.
+- Müşteri kaydı WHMCS `AddClient` API çağrısıyla açılır.
+- Müşteri girişi WHMCS `ValidateLogin` ile doğrulanır.
+- Laravel sadece oturum, Türkçe vitrin ve müşteri deneyimi katmanıdır.
 - Siparişler WHMCS `AddOrder` API çağrısıyla açılır.
 - WHMCS sipariş, fatura, servis ve ticket id değerleri lokalde saklanır.
 - Destek talepleri WHMCS `OpenTicket`, yanıtlar `AddTicketReply` ile işlenir.
